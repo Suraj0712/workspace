@@ -7,6 +7,8 @@ add_compile_options(-std=c++11)
 
 # Finding the packages required (dependencies for this package)
 find_package(PCL REQUIRED)
+find_package(OpenCV 4.1 REQUIRED)
+
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
@@ -26,9 +28,13 @@ include_directories(
   include/point_clould_processing
   ${PCL_INCLUDE_DIRS}
   ${catkin_INCLUDE_DIRS}
+  ${OpenCV_INCLUDE_DIRS}
 )
 
+link_directories(${OpenCV_LIBRARY_DIRS})
+
 add_definitions(${PCL_DEFINITIONS})
+add_definitions(${OpenCV_DEFINITIONS})
 
 # Adding the executable files for the build
 add_executable(${PROJECT_NAME}_node src/point_clould_processing.cpp src/point_clould_processing_node.cpp)
@@ -37,4 +43,5 @@ add_executable(${PROJECT_NAME}_node src/point_clould_processing.cpp src/point_cl
 target_link_libraries(${PROJECT_NAME}_node
   ${catkin_LIBRARIES}
   ${PCL_LIBRARIES}
+  ${OpenCV_LIBS}
 )

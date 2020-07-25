@@ -12,6 +12,13 @@
 #include <pcl/io/pcd_io.h>          // pcl file handling
 #include <chrono>                   // Time related library header                  
 #include <thread> 
+#include "Eigen/Dense"
+#include <cmath>
+#include <vector>
+
+#include <opencv2/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
 
 
 class PointCloudProcessing
@@ -40,7 +47,6 @@ class PointCloudProcessing
         /* Vectors and point cloud to store the point cloud into the different kinds of data structures */
         std::vector<sensor_msgs::PointCloud2> rs_pt_cloud_vec_;
         std::vector<pcl::PointCloud<pcl::PointXYZ> > pcl_pt_cloud_vec_;
-        std::vector<pcl::PCLPointCloud2> pcl_pt_cloud2_vec_;
         sensor_msgs::PointCloud2 rs_pt_cloud_;
         pcl::PointCloud<pcl::PointXYZ> pcl_pt_cloud_;
         pcl::PCLPointCloud2 pcl_pt_cloud2_;
@@ -56,7 +62,7 @@ class PointCloudProcessing
 
         int no_of_clouds_;      // variables to store the number of pointclouds based on user input
         int point_cloud_count_; // count the point cloud and rpint the same on the window */
-
+        std::string event_;
         /* Callback function to handle the messeges received from the topic
             Try to aviod data processing in the callback fuction, the general practise 
             is to store the data from the callback function into some member variable for 
@@ -65,15 +71,23 @@ class PointCloudProcessing
     
         /* this function will access the point cloud from the vector and then
             convert the same to the pcl pointcloud2 and pcl pointcloud and store them in vector*/
-        void convertPointCloudtoPCLpc2andPCLpc();
+        void convertToPCL();
 
         /* This is the function which we will use for the storing the 
             point clouds in the .pcd and .csv files */
-        void savePointCloudinPCDAndCSVfiles();
+        void storeInCSV();
 
         /* This function will publish the pointcloud on the topic wait function is 
             implemented by using the chronos and thread, you might ger ERROR while visualisation
             the same in the rviz. just update the frame and then i think you are ggo to go */
-        void publishPointCloud();       
+        void generatePointCloudTensor();
+
+        std::vector<double> vec_distance;
+        std::vector<double> for_image_mean;
+        std::vector<double> for_image_std;
+        std::vector<int> for_image_nan;
+
+        void storeMeanStddevNan();
+
 };
 #endif  

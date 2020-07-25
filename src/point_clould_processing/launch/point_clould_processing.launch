@@ -2,6 +2,7 @@
 <launch>
     <!-- following is the tag to accept the arguments from the command line -->
     <arg name="no_of_clouds" default="10" />
+    <arg name="event" default="default" />
 
     <!-- Defining the node and executable and publishing the output on terminal-->
     <node name="point_clould_processing_node" pkg="point_clould_processing" type="point_clould_processing_node" output="screen">
@@ -9,5 +10,6 @@
         <rosparam command="load" file="$(find point_clould_processing)/config/point_clould_processing.yaml"/>
         <!-- storing the value of parameter in the variable -->
         <param name="no_of_clouds" value="$(arg no_of_clouds)" />
+        <param name="event" value="$(arg event)" />
     </node>
 </launch>
